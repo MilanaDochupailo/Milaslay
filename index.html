@@ -1,1 +1,63 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8">
+  <title>Царствие Небесное: Путь Христа</title>
+  <style>
+    body { font-family: sans-serif; text-align: center; background-color: #f8f4ec; }
+    .cell { display: inline-block; width: 120px; height: 80px; border: 2px solid #ccc; margin: 5px;
+            line-height: 80px; vertical-align: middle; background: #fffbe6; }
+    .good { background-color: #c8facc; }
+    .bad { background-color: #ffd6d6; }
+    .neutral { background-color: #f0f0f0; }
+    .player { color: red; font-weight: bold; }
+    button { margin-top: 20px; padding: 10px 20px; font-size: 16px; }
+  </style>
+</head>
+<body>
+  <h1>Царствие Небесное: Путь Христа</h1>
+  <div id="board"></div>
+  <button onclick="rollDice()">🎲 Бросить кубик</button>
+  <p id="message"></p>
 
+  <script>
+    const board = [
+      { name: 'Пелёнки', type: 'good' },
+      { name: 'Гордость', type: 'bad' },
+      { name: 'Молитва', type: 'good' },
+      { name: 'Сомнение', type: 'bad' },
+      { name: 'Храм', type: 'good' },
+      { name: 'Зависть', type: 'bad' },
+      { name: 'Смирение', type: 'good' },
+      { name: 'Гнев', type: 'bad' },
+      { name: 'Любовь', type: 'good' },
+      { name: 'Царствие Небесное', type: 'neutral' }
+    ];
+    let position = 0;
+
+    function renderBoard(){
+      const c = document.getElementById('board');
+      c.innerHTML = '';
+      board.forEach((cell, i) => {
+        const div = document.createElement('div');
+        div.className = 'cell ' + cell.type;
+        div.innerHTML = (i === position?'<span class="player">👣</span><br>':'')+cell.name;
+        c.appendChild(div);
+      });
+    }
+
+    function rollDice(){
+      const roll = Math.floor(Math.random()*2)+1;
+      position = Math.min(position + roll, board.length - 1);
+      const cell = board[position];
+      const msg = position === board.length - 1
+        ? '🎉 Ты достиг Царствия Небесного!'
+        : `Ты ступил на клетку «${cell.name}» ${cell.type==='good'? '✨ Добродетель!' : cell.type==='bad'? '⚠️ Искушение!' : ''}`;
+      document.getElementById('message').innerText = msg;
+      renderBoard();
+    }
+
+    renderBoard();
+  </script>
+</body>
+</html>
